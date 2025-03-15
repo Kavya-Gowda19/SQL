@@ -1,0 +1,69 @@
+Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-queries in the WHERE clause. It provides an easy way to handle multiple OR condition.
+            In general, we can only use one condition in the Where clause, but the IN operator allows us to specify multiple values.
+            SELECT * FROM Customers
+            WHERE Country IN ('Germany', 'France', 'UK');
+            SELECT * FROM Customers
+            WHERE CustomerID IN (SELECT CustomerID FROM Orders);
+            SELECT * FROM Customers
+            WHERE CustomerID NOT IN (SELECT CustomerID FROM Ord
+
+      2.BETWEEN :The BETWEEN operator selects values within a given range. The values can be numbers, text, or dates.
+                 SELECT * FROM Products
+                 WHERE Price BETWEEN 10 AND 20;     //WHERE OrderDate BETWEEN #07/01/1996# AND #07/31/1996#; or '1996-07-01' AND '1996-07-31'
+
+      3.SELECT TOP :The SELECT TOP clause is used to specify the number of records to return.
+                    SELECT TOP 3 * FROM Customers;
+ 
+                   Not all database systems support the SELECT TOP clause. MySQL supports the LIMIT clause to select a limited number of records
+      4.SQL Aliases :SQL aliases are used to give a table, or a column in a table, a temporary name
+                    SELECT CustomerID AS ID    //CustomerID ID
+                    FROM Customers;  //AS is optional
+                   Using "double quotes" for aliases with space characters:
+                                                                          SELECT ProductName AS "My Great Products"
+                                                                          FROM Products;
+
+
+
+
+
+            
+  **** 5.SQL COMMANDS:
+        SQL commands are instructions. It is used to communicate with the database. It is also used to perform specific tasks, functions, and queries of data.      
+        SQL can perform various tasks like create a table, add data to tables, drop the table, modify the table, set permission for users.
+        Types Of Command:
+        There are four types of SQL commands: DDL – Data Definition Language
+                                              DQL – Data Query Language
+                                              DML – Data Manipulation Language
+                                              DCL – Data Control Language
+                                              TCL – Transaction Control Language
+
+        1}DDL:DDL changes the structure of the table like creating a table, deleting a table, altering a table, etc.
+             - All the command of DDL are auto-committed that means it permanently save all the changes in the database.
+             - (6) Create,Alter,Drop,Turnacate,Rename,Comment
+             -            Command                   Description	Syntax
+                          CREATE	                  Create database or its objects (table, index, function, views, store procedure, and triggers)
+                                                    CREATE TABLE table_name (column1 data_type, column2 data_type, ...);
+
+
+                          DROP	                    Drop an existing table in a database 
+                                                    Drop is uesd to delete both table and attribute
+                                                    Example:
+                                                    1.DROP TABLE table_name;
+                                                    2.ALTER TABLE table_name
+                                                      DROP COLUMN column_name;
+                                                      note:remove or modify the foreign key constraint - 1.ALTER TABLE child_table DROP CONSTRAINT constraint_name;
+                                                                                                           DROP TABLE parent_table;
+                                                                                                         2.If you want to delete the table and automatically remove all dependencies, use CASCADE:
+                                                                                                            DROP TABLE parent_table CASCADE; //This will delete the table and also remove 
+                                                                                                                                                 foreign key constraints from child tables.
+
+                          ALTER	                    The ALTER TABLE statement is used to add, delete, or modify columns in an existing table.
+                                                                                             	ALTER TABLE table_name ADD COLUMN column_name data_type;
+                                           TRUNCATE	                                          The TRUNCATE TABLE statement is used to delete the data inside a table, but not the table itself.	
+                                                                                              TRUNCATE TABLE table_name;
+                                          COMMENT	Add comments to the data dictionary	COMMENT 'comment_text' ON TABLE table_name;
+                                          RENAME	Rename an object existing in the database	RENAME TABLE old_table_name TO new_table_name;
+
+
+
+
