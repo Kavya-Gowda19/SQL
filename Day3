@@ -21,13 +21,13 @@ Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-querie
                    Using "double quotes" for aliases with space characters:
                                                                           SELECT ProductName AS "My Great Products"
                                                                           FROM Products;
-
+ ******5.ON DELETE CASCADE - when a record in the parent table is deleted, all corresponding records in the child table are automatically deleted as well.
 
 
 
 
             
-  **** 5.SQL COMMANDS:
+  **** 9.SQL COMMANDS:
         SQL commands are instructions. It is used to communicate with the database. It is also used to perform specific tasks, functions, and queries of data.      
         SQL can perform various tasks like create a table, add data to tables, drop the table, modify the table, set permission for users.
         Types Of Command:
@@ -37,15 +37,18 @@ Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-querie
                                               DCL – Data Control Language
                                               TCL – Transaction Control Language
 
-        1}DDL:DDL changes the structure of the table like creating a table, deleting a table, altering a table, etc.
+        1}Data Definition Language:
+               DDL changes the structure of the table like creating a table, deleting a table, altering a table, etc.
              - All the command of DDL are auto-committed that means it permanently save all the changes in the database.
              - (6) Create,Alter,Drop,Turnacate,Rename,Comment
-             -            Command                   Description	Syntax
-                          CREATE	                  Create database or its objects (table, index, function, views, store procedure, and triggers)
+
+
+             -            Command                                         Description	
+                          CREATE	                Create database or its objects (table, index, function, views, store procedure, and triggers)
                                                     CREATE TABLE table_name (column1 data_type, column2 data_type, ...);
 
 
-                          DROP	                    Drop an existing table in a database 
+                          DROP	                Drop an existing table in a database 
                                                     Drop is uesd to delete both table and attribute
                                                     Example:
                                                     1.DROP TABLE table_name;
@@ -57,12 +60,78 @@ Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-querie
                                                                                                             DROP TABLE parent_table CASCADE; //This will delete the table and also remove 
                                                                                                                                                  foreign key constraints from child tables.
 
-                          ALTER	                    The ALTER TABLE statement is used to add, delete, or modify columns in an existing table.
-                                                                                             	ALTER TABLE table_name ADD COLUMN column_name data_type;
-                                           TRUNCATE	                                          The TRUNCATE TABLE statement is used to delete the data inside a table, but not the table itself.	
-                                                                                              TRUNCATE TABLE table_name;
-                                          COMMENT	Add comments to the data dictionary	COMMENT 'comment_text' ON TABLE table_name;
-                                          RENAME	Rename an object existing in the database	RENAME TABLE old_table_name TO new_table_name;
+                          ALTER	               The ALTER TABLE statement is used to add, delete, or modify columns in an existing table.
+                                                   -ALTER TABLE table_name                          ALTER TABLE Persons            ALTER TABLE Persons
+                                                    ADD COLUMN column_name data_type;               ADD DateOfBirth date;          ALTER COLUMN DateOfBirth year;
+                                                   -ALTER TABLE Customers
+                                                    DROP COLUMN Email;
+                                                   -ALTER TABLE table_name
+                                                    RENAME COLUMN old_name to new_name;
+
+
+
+                         TRUNCATE	                The TRUNCATE TABLE statement is used to delete the data inside a table, but not the table itself.	
+                                                    TRUNCATE TABLE table_name;
+                         COMMENT	                Add comments to the data dictionary	
+                                                    COMMENT 'comment_text' ON TABLE table_name;
+                         RENAME	                Rename an object existing in the database	
+                                                    RENAME TABLE old_table_name TO new_table_name;   
+
+           @diffference between delete/drop and truncate
+
+                     Scenario	                                    DELETE Works?	                                    TRUNCATE Works?
+                     Parent Table (Referenced by another table)	✅ Works if ON DELETE CASCADE, ❌ Fails otherwise	❌ Fails unless constraints are removed
+                     Child Table (References another table)	            ✅ Works	                                                ✅ Works
+                     Fastest way to remove all rows?	            ❌ No	                                                ✅ Yes
+                note:TRUNCATE TABLE departments CASCADE;   //(But this may delete child table data too!)
+                              
+           @Difference Between TRUNCATE,DELETE and DROP
+
+                                                  Command	  Removes Data?	Removes Table Structure        Resets Auto-Increment?	Frees Space?
+                                                  DELETE	  ✅ Yes (row-by-row)	❌ No	                   ❌ No	             ❌ No (slower)
+                                                  TRUNCATE	  ✅ Yes (all at once)	❌ No	                   ✅ Yes	             ✅ Yes (more efficient)
+                                                  DROP	  ✅ Yes	            ✅ Yes (completely             ✅ Yes	             ✅ Yes
+             //Removes Table Structure:  When you TRUNCATE a table, it removes all the data (rows) inside the table, but the table itself (structure) remains intact
+
+2}  Data Query Language(DQL) 
+        -DQL statements are used for performing queries on the data within schema objects.Used To query and retrieve data from a database
+        -DQL is mostly centered around the SELECT statement, which is used to fetch data according to specified criteria.
+        -SELECT: select retrieves data from one or more tables.
+                 SELECT column1, column2, ... FROM table_name;
+        -Here’s an overview of the SELECT statement and its common clauses such as WHERE Clause,JOIN Clauses,GROUP BY Clauses,ORDER BY clauses
+
+3} Data Manipulation Language(DML)
+
+
+
+
+
+
+
+
+
+
+
+
+NOTE :  Category Full Form	            Purpose	                                    Common Commands
+        DDL	Data Definition Language	To define and modify database structure	CREATE, ALTER, DROP, TRUNCATE, RENAME
+        DML	Data Manipulation Language	To manipulate data within existing structures	SELECT, INSERT, UPDATE, DELETE
+        DCL	Data Control Language	            To control access to data in the database	GRANT, REVOKE
+        TCL	Transaction Control Language	To manage transactions in the database	COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION
+        DQL	Data Query Language	            To query and retrieve data from a database	SELECT (often used with WHERE, JOIN, GROUP BY, HAVING, ORDER BY)
+
+      
+
+
+
+
+
+
+
+
+
+
+
 
 
 
