@@ -22,12 +22,8 @@ Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-querie
                                                                           SELECT ProductName AS "My Great Products"
                                                                           FROM Products;
  ******5.ON DELETE CASCADE - when a record in the parent table is deleted, all corresponding records in the child table are automatically deleted as well.
-
-
-
-
-            
-  **** 9.SQL COMMANDS:
+        
+  **** 6.SQL COMMANDS:
         SQL commands are instructions. It is used to communicate with the database. It is also used to perform specific tasks, functions, and queries of data.      
         SQL can perform various tasks like create a table, add data to tables, drop the table, modify the table, set permission for users.
         Types Of Command:
@@ -61,8 +57,8 @@ Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-querie
                                                                                                                                                  foreign key constraints from child tables.
 
                           ALTER	               The ALTER TABLE statement is used to add, delete, or modify columns in an existing table.
-                                                   -ALTER TABLE table_name                          ALTER TABLE Persons            ALTER TABLE Persons
-                                                    ADD COLUMN column_name data_type;               ADD DateOfBirth date;          ALTER COLUMN DateOfBirth year;
+                                                   -ALTER TABLE table_name                   ->       ALTER TABLE Persons    ->      ALTER TABLE Persons
+                                                    ADD COLUMN column_name data_type;                 ADD DateOfBirth date;          ALTER COLUMN DateOfBirth year;
                                                    -ALTER TABLE Customers
                                                     DROP COLUMN Email;
                                                    -ALTER TABLE table_name
@@ -98,13 +94,73 @@ Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-querie
         -DQL is mostly centered around the SELECT statement, which is used to fetch data according to specified criteria.
         -SELECT: select retrieves data from one or more tables.
                  SELECT column1, column2, ... FROM table_name;
+        -SELECT *                     SELECT *          
+         INTO newtable      ->        INTO CustomersGermany
+         FROM oldtable                WHERE Country = 'Germany';
+         WHERE condition;
+
         -Here’s an overview of the SELECT statement and its common clauses such as WHERE Clause,JOIN Clauses,GROUP BY Clauses,ORDER BY clauses
 
 3} Data Manipulation Language(DML)
+    used to retrieve, insert, update, and delete data in a database
+    1.INSERT :The INSERT INTO statement is used to insert new records in a table
+      -It is possible to write the INSERT INTO statement in two ways:
+        1. Specify both the column names and the values to be inserted:
+
+             INSERT INTO table_name (column1, column2, column3, ...)
+             VALUES (value1, value2, value3, ...);
+
+        2. If you are adding values for all the columns of the table, you do not need to specify the column names in the SQL query. However, 
+           make sure the order of the values is in the same order as the columns in the table. Here, the INSERT INTO syntax would be as follows:
+
+            INSERT INTO table_name
+            VALUES (value1, value2, value3, ...);
+   2.UPDATE :It is used to modify the existing records in a table. [US]
+          UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition;
+
+   3.DELETE :It is used to delete existing records in a table.
+   4.SELECT
 
 
+4}Data Control Language(DCl): DCL commands are used to grant rights, permissions, and other controls of the database system and take back authority from any database user. 
+   1.GRANT :The GRANT command is used to grant specific privileges to database users or roles
+     GRANT <obj_priv> ON <obj_name> To <username>;  
+     -Example: GRANT SELECT, INSERT ON Employees TO HR_Manager;
+     -In the above syntax, obj_priv> is the DML statement like Insert, Delete , update and Select and <obj_name>is a table, view etc. and username 
+      is the name of the authorized user
+    2.REVOKE: It is used to take back permissions from the user.
+     -REVOKE <obj_priv> ON <obj_name> FROM <username>;  
+     -In the above syntax, obj_priv> is the DML statement like Insert, Delete , update and Select and <obj_name> is a table, view etc. and username 
+      is the name of the user from whom the permission is revoked
+     -Example :REVOKE DELETE ON Customers FROM Sales_Team;
+
+5}Transaction Control Language(TCL):
+Transactions are atomic i.e. either every statement succeeds or none of statement succeeds. There are number of Transaction Control statements available 
+that allow us to control this behavior.These statements ensure data consistency. TCL commands can only use with DML commands like INSERT, DELETE and UPDATE only
+  1.BEGIN : it is used to behin the transcation
+  2.COMMIT :Changes made in the transaction saved permanently.
+  3.SAVEPOINT: It is used to roll the transaction back to a certain point without rolling back the entire transaction
+  4.ROLLBACK :Rollback command is used to undo transactions that have not already been saved to the database.
 
 
+   SQL Command	Code Snippet	             Output
+    Begin               BEGIN;                                     BEGIN TRANSACTION [transaction_name];
+    COMMIT	            BEGIN; 
+                        -- SQL statements
+                        COMMIT;	                               Changes made in the transaction saved permanently.
+    ROLLBACK             BEGIN; 
+                         -- SQL statements 
+                         ROLLBACK;	                               Changes made in the transaction rolled back.
+   SAVEPOINT	  BEGIN; 
+                          -- SQL statements 
+                          SAVEPOINT my_savepoint;
+                          -- More SQL statements 
+                          ROLLBACK TO my_savepoint;	         Savepoint created and later used to roll back to a specific point in the transaction.
+
+   ROLLBACK example:     START TRANSACTION;
+                         UPDATE employees SET dept_id = 2 WHERE emp_id = 1;
+                         //-- Oops! Wrong update, let's undo it    //the detials will be not seen by others as it is not commit till 
+                         ROLLBACK;
 
 
 
