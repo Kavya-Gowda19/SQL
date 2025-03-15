@@ -167,12 +167,12 @@ note:1.ENUM :ENUM is a data type that lets you store only specific, pre-defined 
        When to Use:✅ When you have a fixed set of values (e.g., days of the week, user roles).
                    ❌ Avoid if values might change often (better to use a separate table with FOREIGN KEY).
 
-                                                    Use Case	                        ENUM	    FOREIGN KEY
-                                                    Fixed values (rarely change)	    ✅ Yes	  ❌ No
-                                                    Dynamic values (can change often)	❌ No	    ✅ Yes
-                                                    Fast lookup performance	          ✅ Yes	  ❌ Slightly slower
-                                                    Requires additional metadata	    ❌ No	    ✅ Yes
-                                                    Avoids ALTER TABLE for changes	  ❌ No	  ✅ Yes
+                                                    Use Case	                          ENUM	    FOREIGN KEY
+                                                    Fixed values (rarely change)	      ✅ Yes	    ❌ No
+                                                    Dynamic values (can change often)	 ❌ No	    ✅ Yes
+                                                    Fast lookup performance	           ✅ Yes	    ❌ Slightly slower
+                                                    Requires additional metadata	      ❌ No	    ✅ Yes
+                                                    Avoids ALTER TABLE for changes	    ❌ No	    ✅ Yes
      If your app requires dynamic categories (e.g., user-defined categories), go with a FOREIGN KEY. If categories are static and won't change often, ENUM is fine.
 
 
@@ -218,8 +218,8 @@ note:1.ENUM :ENUM is a data type that lets you store only specific, pre-defined 
 
      7.Wildcards : Wildcards are special characters used with the LIKE operator to search for patterns in text.
        Wildcard	  Meaning	                                                           Example
-       %	   Matches zero or more characters	                                   'A%' → Starts with "A"
-       _	   Matches exactly one character	                                     '_B%' → Second letter is "B"(min 2 characters)
+       %	   Matches zero or more characters	                                    'A%' → Starts with "A"
+       _	   Matches exactly one character	                                      '_B%' → Second letter is "B"(min 2 characters)
        [ ]	 Matches any single character inside the brackets (SQL Server only)	 'B[aeiou]g' → Matches "Bag", "Beg", "Big" 
        [^ ]	 Matches any character NOT inside the brackets (SQL Server only)	   'B[^aeiou]g' → Matches "Bkg", but NOT "Bag"
        \	   Escape character for special symbols	                               '10\% discount' → Searches for "10%"
