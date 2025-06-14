@@ -12,7 +12,7 @@ Note :1.IN :The IN Operator in SQL is used to specify multiple values/sub-querie
                  WHERE Price BETWEEN 10 AND 20;     //WHERE OrderDate BETWEEN #07/01/1996# AND #07/31/1996#; or '1996-07-01' AND '1996-07-31'
 
       3.SELECT TOP :The SELECT TOP clause is used to specify the number of records to return.
-                    SELECT TOP 3 * FROM Customers;
+                    SELECT TOP 3 * FROM Customers; (not aplicable to mysql)
  
                    Not all database systems support the SELECT TOP clause. MySQL supports the LIMIT clause to select a limited number of records
       4.SQL Aliases :SQL aliases are used to give a table, or a column in a table, a temporary name
