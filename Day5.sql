@@ -59,27 +59,31 @@
   SELECT * FROM Employees 
   WHERE Salary BETWEEN 50000 AND 60000;
 
-10.List departments with more than one employee
+*10.List departments with more than one employee
    SELECT Department, COUNT(*) AS EmpCount 
    FROM Employees 
    GROUP BY Department 
    HAVING COUNT(*) > 1;
 
-11.Get the average salary of all employees
-   SELECT AVG(Salary) AS AvgSalary FROM Employees;
+*11.Find duplicate department entries in Employees
+  SELECT Department, COUNT(*) AS DeptCount 
+  FROM Employees 
+  GROUP BY Department 
+  HAVING COUNT(*) > 1;
+  If a department appears more than once, it's considered a "duplicate entry" here.
 
 12.Find employees earning more than the average salary
    SELECT * FROM Employees 
    WHERE Salary > (SELECT AVG(Salary) FROM Employees);
 
-13.Get the department with the highest total salary
+*13.Get the department with the highest total salary
    SELECT Department 
    FROM Employees 
    GROUP BY Department 
    ORDER BY SUM(Salary) DESC 
    LIMIT 1;
 
-14.Find the highest-paid employee in each department
+*14.Find the highest-paid employee in each department
    SELECT * 
    FROM Employees E1 
    WHERE Salary = (
@@ -117,17 +121,18 @@
 20.Format salary with a currency symbol (MySQL)
   SELECT Name, CONCAT('₹', FORMAT(Salary, 2)) AS Salary 
   FROM Employees;
-
++
 21.Find the second highest salary
   SELECT MAX(Salary) 
   FROM Employees 
   WHERE Salary < (SELECT MAX(Salary) FROM Employees);
 
-22.Find duplicate department entries in Employees
-  SELECT Department, COUNT(*) AS DeptCount 
-  FROM Employees 
-  GROUP BY Department 
-  HAVING COUNT(*) > 1;
+  select * from employee
+  order by salary DESC
+  limit 2 offset 1;
+
+22.Get the average salary of all employees
+   SELECT AVG(Salary) AS AvgSalary FROM Employees;
 
 23.Order employees by department and then salary descending
   SELECT * FROM Employees 
