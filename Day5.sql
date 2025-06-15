@@ -44,8 +44,6 @@
   FROM Employees E;
 
 
-
-
 7.Find employees with no valid department in the Departments table
   SELECT E.Name 
   FROM Employees E 
@@ -147,33 +145,22 @@
    SELECT DISTINCT Department FROM Employees
     );
 
+26. 3rd high salary / n high salary
+    select emp_salary from employee2 
+    order by emp_salary desc
+    limit 1 offset 2;    (offset like similar to remove)  Offset (n-1) for nth highest salary 
+
+ 27. Delete duplicate rows while keeping one record  
+     DELETE FROM Employee WHERE id NOT IN ( SELECT MIN(id) FROM Employee GROUP BY name, salary, department ); 
+
+28. Write a query to fetch all employees who have the same salary as another employee 
+    SELECT e1.* FROM Employee e1 JOIN Employee e2 ON e1.salary = e2.salary AND e1.id <> e2.id; 
+
+29.Find employees who joined in the last 3 months 
+   SELECT * FROM Employee WHERE joining_date >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);
 
 
 
-
-
-Find the second highest salary in an Employee table  
-SELECT MAX(salary) AS SecondHighestSalary FROM Employee WHERE salary < (SELECT MAX(salary) FROM Employee); 
--- Retrieve employees with the highest salary in each department  
-SELECT e.* FROM Employee e WHERE salary = (SELECT MAX(salary) FROM 
-Employee WHERE department_id = e.department_id); 
--- Find duplicate records in a table  
-SELECT column_name, COUNT() FROM table_name GROUP BY column_name HAVING COUNT() > 1; 
--- Delete duplicate rows while keeping one record  
-DELETE FROM Employee WHERE id NOT IN ( SELECT MIN(id) FROM Employee GROUP BY name, salary, department ); 
--- Find the nth highest salary in a table (e.g., 3rd highest salary)  
-SELECT DISTINCT salary FROM Employee ORDER BY salary DESC LIMIT 1 OFFSET 2; -- Offset (n-1) for nth highest salary 
--- Write a query to fetch all employees who have the same salary as another employee  
-SELECT e1.* FROM Employee e1 JOIN Employee e2 ON e1.salary = e2.salary AND e1.id <> e2.id; 
--- Retrieve employee details who earn more than their department's average salary  
-SELECT e.* FROM Employee e WHERE salary > ( SELECT AVG(salary) FROM 
-Employee WHERE department_id = e.department_id ); 
--- Get a count of employees in each department  
-SELECT department_id, COUNT(*) AS EmployeeCount FROM Employee GROUP BY department_id; 
--- Fetch the top 3 highest earning employees  
-SELECT * FROM Employee ORDER BY salary DESC LIMIT 3; 
--- Find employees who joined in the last 3 months  
-SELECT * FROM Employee WHERE joining_date >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH); 
    
   
 
@@ -181,14 +168,10 @@ SELECT * FROM Employee WHERE joining_date >= DATE_SUB(CURDATE(), INTERVAL 3 MONT
 
 
 
-  
 
 
 
-
-
-
-
+-->Only disable sql_safe_updates if u r sure wt u r doing allows update and deletes sttement without a WHERE or LIMIT clause.
 -->WINDOW FUNCTION IN MYSQL and ITS TYPES
 
 -->GROUP and Order By
