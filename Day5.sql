@@ -1,3 +1,4 @@
+
 1.Get all employee records
  SELECT * FROM Employees;
 
@@ -192,7 +193,75 @@
 
 -->Only disable sql_safe_updates if u r sure wt u r doing allows update and deletes sttement without a WHERE or LIMIT clause.
 -->WINDOW FUNCTION IN MYSQL and ITS TYPES
+   window functions applies aggregate,ranking and analytic functions over a particular window(set of rows).
+   And OVER clause is used with window functions to define that window (set of rows).
+  -Unlike GROUP BY, it doesn’t collapse the rows — it retains individual rows and just adds extra info.
+      
 
+
+   
+-->CASE statement/expression in SQL
+   The CASE expression is like an if-else ladder in SQL. It lets you return different values based on conditions.
+   1. SELECT emp_id, emp_name, emp_salary,
+      CASE
+      WHEN emp_salary >= 80000 THEN 'High'
+      WHEN emp_salary >= 50000 THEN 'Medium'
+      ELSE 'Low'
+      END AS salary_level
+      FROM employee2;
+            | emp_name  | emp_salary  | salary_level  |
+            | --------- | ----------- | ------------- |
+            | Asha      | 90000       | High          |
+            | Bimal     | 60000       | Medium        |
+   
+   2.SELECT emp_name, emp_salary
+     FROM employee2
+     ORDER BY
+     CASE
+     WHEN emp_salary >= 80000 THEN 1
+     WHEN emp_salary >= 50000 THEN 2
+     ELSE 3
+     END;
+            | emp_name  | emp_salary  |          
+            | --------- | ----------- | 
+            | Asha      | 90000       |       ← Rank 1 
+            | Esha      | 80000       |       ← Rank 1 
+
+   Asha and Esha have salaries ≥ 80000 → rank 1 → appear first
+   Bimal has salary ≥ 50000 → rank 2 → appears after rank 1
+   
+  3.CASE in a JOIN condition
+     SELECT e.emp_name, d.dept_name,
+     CASE 
+     WHEN e.emp_salary > 80000 THEN 'Senior Dept'
+     ELSE 'Regular Dept'
+     END AS dept_type
+     FROM employee2 e
+     JOIN department2 d ON e.emp_id = d.emp_id;
+
+  4.CASE in an UPDATE statement
+    UPDATE employee2
+    SET emp_salary = emp_salary + 
+    CASE 
+    WHEN emp_salary > 80000 THEN 5000
+    WHEN emp_salary > 50000 THEN 3000
+    ELSE 1000
+    END;
+
+   5.CASE in a WHERE clause (not common, but valid)
+    SELECT * FROM employee2
+    WHERE 
+    CASE 
+    WHEN emp_name = 'Asha' THEN 1
+    WHEN emp_salary > 50000 THEN 1
+    ELSE 0
+    END = 1;
+    Selects Asha and anyone with salary > 50000.
+
+
+
+
+   
 -->GROUP and Order By
 Sample Table: `Employees`
 
@@ -284,7 +353,28 @@ Output:
 
       DROP INDEX idx_dob ON Employee2;
    
+--> VIEW 
+   Views in MySQL are indeed "virtual tables" that are used to view data from one or more tables. Views do not have their
+   data but rather store data virtually, consisting of rows and columns. 
+  -Why use a VIEW?
+   To simplify complex queries
+   To show only specific columns/rows to users (security)
+   To reuse commonly used queries
 
+   CREATE VIEW employee_department_view AS
+   SELECT e.emp_id, e.emp_name, e.emp_designation,d.dept_name
+   FROM employee2 e
+   JOIN department2 d ON e.emp_id = d.emp_id;
+
+   SELECT * FROM employee_department_view;
+
+   UPDATE employee_department_view
+   SET emp_salary = 95000
+   WHERE emp_id = 1;
+   
+   DROP VIEW employee_department_view;
+
+  
 
 
 
