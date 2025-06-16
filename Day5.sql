@@ -155,11 +155,25 @@
     order by emp_salary desc
     limit 1 offset 2;    (offset like similar to remove)  Offset (n-1) for nth highest salary 
 
- 27. Delete duplicate rows while keeping one record  
-     DELETE FROM Employee WHERE id NOT IN ( SELECT MIN(id) FROM Employee GROUP BY name, salary, department ); 
+27. Delete duplicate rows while keeping one record  
+    DELETE FROM Employee WHERE id N;;;OT IN ( SELECT MIN(id) FROM Employee GROUP BY name, salary, department ); 
 
 28. Write a query to fetch all employees who have the same salary as another employee 
     SELECT e1.* FROM Employee e1 JOIN Employee e2 ON e1.salary = e2.salary AND e1.id <> e2.id; 
+    SELECT * -> It will return all columns from both tables,
+   
+   SELECT * 
+   FROM Employee 
+   WHERE salary IN (
+    SELECT salary 
+    FROM Employee 
+    GROUP BY salary 
+    HAVING COUNT(*) > 1
+    );
+   inner query finds all salaries that are shared by more than one employee.WHERE salary IN (50000, 60000);
+
+   🔸 GROUP BY salary → groups all rows that have the same salary.
+   🔸 COUNT(*) > 1 → keeps only those salary groups that appear more than once.
 
 29.Find employees who joined in the last 3 months 
    SELECT * FROM Employee WHERE joining_date >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH);
@@ -247,8 +261,29 @@ Output:
 | Together   | First group data → then sort grouped results                 |
 
 
+--> Create Index:
+  - The CREATE INDEX statement is used to create indexes in tables.
+  -  Why Use Indexes?
+     To speed up SELECT queries
+     To improve search/filter performance (e.g., in WHERE, JOIN, ORDER BY)
+     Especially useful on large tables
+   - When Not to Use Indexes
+     On columns that are frequently updated
+     On small tables (where full scan is already fast)
+     On columns with many duplicate values (like gender or status)
 
+      CREATE INDEX idx_salary 
+      ON Employee2 (emp_salary);
 
+      SHOW INDEXES FROM Employee2;
+      -- Table	Non_unique	Key_name	Seq_in_index	Column_name	 Index_type
+      -- Employee	1	    idx_salary	  1	             salary   	 BTREE
+
+      CREATE UNIQUE INDEX idx_dob 
+      ON Employee2(emp_dob);
+
+      DROP INDEX idx_dob ON Employee2;
+   
 
 
 
