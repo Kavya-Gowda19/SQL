@@ -607,7 +607,28 @@ CALL updateSalaryByCity('hassan', 5000);
    -- Q94 WAQ to print the current user of the system
     select system_user();
     
--- Q95 WAQ to 
+-- Q95 WAQ to create department table and insert values
+create table department2(
+dept_id int not null primary key,
+dept_name varchar(40),
+emp_id int,
+FOREIGN KEY (emp_id)
+REFERENCES employee2(emp_id)
+ON DELETE SET NULL
+ON UPDATE CASCADE);
+
+INSERT INTO department2 (dept_id, dept_name, emp_id) VALUES
+(10, 'Manager', 1),
+(20, 'Manager', 2),
+(30, 'Manager', 3),
+(40, 'saleing', 4),
+(50, 'Accounts', 5);
+
+select * from department2;
+
+-->ON DELETE SET NULL → If the employee is deleted, the emp_id in department becomes NULL.
+   ON UPDATE CASCADE → If emp_id changes in employee2, it gets updated here too.
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
