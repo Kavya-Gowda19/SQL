@@ -211,19 +211,51 @@
                                from employee;
     1. ROW_NUMBER()
        Purpose: Assigns a unique number to each row in the result set based on ordering.  
-
+           SELECT name, department, salary,
+           ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS row_num
+           FROM employees;  
+                    | name  | department | salary | row\_num |
+                    | ----- | ---------- | ------ | -------- |
+                    | Dave  | HR         | 45000  | 1        |
+                    | Alice | HR         | 40000  | 2        |
+                    | Carol | IT         | 70000  | 1        |
+                    | Bob   | IT         | 60000  | 2        |
+                    | Eve   | IT         | 55000  | 3        |
+                    | Grace | Sales      | 65000  | 1        |
+                    | Frank | Sales      | 50000  | 2        |
+ 
    
        Within each department, employees are ranked by salary (highest to lowest).
        Always assigns a unique number (no duplicates).
 
    2.RANK()
      Purpose: Similar to ROW_NUMBER(), but assigns same rank to ties, with gaps in numbering
-
+       SELECT name, department, salary,
+       RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rank
+       FROM employees;
+        | name  | dept | salary | rank |
+        | ----- | ---- | ------ | ---- |
+        | Dave  | HR   | 45000  | 1    |
+        | Alice | HR   | 40000  | 2    |
+        | Carol | IT   | 70000  | 1    |
+        | Bob   | IT   | 60000  | 2    |
+        | Eve   | IT   | 55000  | 3    |
+      If Bob and Eve had same salary, they'd both get rank 2, and next person would get rank 4
      If two employees in a department have the same salary, they get the same rank.
      The next rank will skip numbers.
 
    3. DENSE_RANK()
      Purpose: Like RANK(), but no gaps in the rank numbers for ties.
+
+
+                    | name  | dept | salary | d\_rank |
+                    | ----- | ---- | ------ | ------- |
+                    | Dave  | HR   | 45000  | 1       |
+                    | Alice | HR   | 40000  | 2       |
+                    | Carol | IT   | 70000  | 1       |
+                    | Bob   | IT   | 60000  | 2       |
+                    | Eve   | IT   | 55000  | 3       |
+                 If two people tie, next person gets next rank without skipping.
        SELECT name, department, salary,
        DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dense_rank
        FROM employees;
@@ -232,19 +264,39 @@
                       RANK()	              1, 1, 3        	Yes
                       DENSE_RANK()	        1, 1, 2	         No
 
-   4. NTILE(n)
+   4. NTILE(n)  [n tile]
      Purpose: Distributes rows into n buckets as evenly as possible.
 
        SELECT name, salary,
        NTILE(3) OVER (ORDER BY salary DESC) AS bucket
        FROM employees;
 
+         | name  | salary | bucket |
+         | ----- | ------ | ------ |
+         | Carol | 70000  | 1      |
+         | Grace | 65000  | 1      |
+         | Bob   | 60000  | 1      |
+         | Eve   | 55000  | 2      |
+         | Frank | 50000  | 2      |
+         | Dave  | 45000  | 3      |
+         | Alice | 40000  | 3      |
+
+
        Sorts by salary and divides into 3 groups (tiles).
        Use it for percentiles, quartiles, deciles, etc.
 
    5. LAG()
       Purpose: Returns value from the previous row in the result set.
-   
+             | name  | salary | prev\_salary |
+             | ----- | ------ | ------------ |
+             | Alice | 40000  | NULL         |
+             | Dave  | 45000  | 40000        |
+             | Frank | 50000  | 45000        |
+             | Eve   | 55000  | 50000        |
+             | Bob   | 60000  | 55000        |
+             | Grace | 65000  | 60000        |
+             | Carol | 70000  | 65000        |
+           
        SELECT name, salary,
        LAG(salary) OVER (ORDER BY salary) AS previous_salary
        FROM employees;
@@ -253,6 +305,17 @@
 
    6. LEAD()
       Purpose: Returns value from the next row in the result set.
+
+             | name  | salary | next\_salary |
+             | ----- | ------ | ------------ |
+             | Alice | 40000  | 45000        |
+             | Dave  | 45000  | 50000        |
+             | Frank | 50000  | 55000        |
+             | Eve   | 55000  | 60000        |
+             | Bob   | 60000  | 65000        |
+             | Grace | 65000  | 70000        |
+             | Carol | 70000  | NULL         |
+
 
        SELECT name, salary,
        LEAD(salary) OVER (ORDER BY salary) AS next_salary
@@ -266,11 +329,30 @@
        SELECT name, department, salary,
        SUM(salary) OVER (PARTITION BY department ORDER BY salary) AS running_total
        FROM employees;
-🔍
+                  | name  | dept | salary | running\_total |
+                  | ----- | ---- | ------ | -------------- |
+                  | Alice | HR   | 40000  | 40000          |
+                  | Dave  | HR   | 45000  | 85000          |
+                  | Eve   | IT   | 55000  | 55000          |
+                  | Bob   | IT   | 60000  | 115000         |
+                  | Carol | IT   | 70000  | 185000         |
+
+
+
+
        Shows the cumulative sum up to the current row in each department.
 
    8. AVG() as a Window Function
       Purpose: Average over a partition.
+
+                   | name  | dept | salary | avg\_salary |
+                   | ----- | ---- | ------ | ----------- |
+                   | Alice | HR   | 40000  | 42500.00    |
+                   | Dave  | HR   | 45000  | 42500.00    |
+                   | Eve   | IT   | 55000  | 61666.67    |
+                   | Bob   | IT   | 60000  | 61666.67    |
+                   | Carol | IT   | 70000  | 61666.67    |
+
 
       SELECT name, department, salary,
       AVG(salary) OVER (PARTITION BY department) AS avg_dept_salary
@@ -279,6 +361,15 @@
       Gives the average salary of the employee’s department in every row.
 
    9. MIN() and MAX()
+
+                   | name  | dept | salary | min\_salary | max\_salary |
+                   | ----- | ---- | ------ | ----------- | ----------- |
+                   | Alice | HR   | 40000  | 40000       | 45000       |
+                   | Dave  | HR   | 45000  | 40000       | 45000       |
+                   | Eve   | IT   | 55000  | 55000       | 70000       |
+                   | Bob   | IT   | 60000  | 55000       | 70000       |
+                   | Carol | IT   | 70000  | 55000       | 70000       |
+
 
        SELECT name, department, salary,
        MIN(salary) OVER (PARTITION BY department) AS min_salary,
@@ -291,15 +382,15 @@
 
                                         | Function          | Use Case Example                      |
                                         | ----------------- | ------------------------------------- |
-                                        | `ROW_NUMBER()`    | Unique row index                      |
-                                        | `RANK()`          | Rank with gaps for ties               |
-                                        | `DENSE_RANK()`    | Rank without gaps                     |
+                                        | `ROW_NUMBER()`    | Unique row index                      |p
+                                        | `RANK()`          | Rank with gaps for ties               |p
+                                        | `DENSE_RANK()`    | Rank without gaps                     |p
                                         | `NTILE(n)`        | Split into n buckets (like quartiles) |
                                         | `LAG()`           | Previous row's value                  |
                                         | `LEAD()`          | Next row's value                      |
-                                        | `SUM()`           | Running total or group total          |
-                                        | `AVG()`           | Average over partition                |
-                                        | `MIN()` / `MAX()` | Min/Max per partition                 |
+                                        | `SUM()`           | Running total or group total          |p
+                                        | `AVG()`           | Average over partition                |p
+                                        | `MIN()` / `MAX()` | Min/Max per partition                 |p
 
 
 
