@@ -332,6 +332,7 @@ select emp_salary from employee2
 order by emp_salary desc
 limit 1 offset 5;
 
+
 -- q53 3rd high salary
 select emp_salary from employee2 
 order by emp_salary asc
