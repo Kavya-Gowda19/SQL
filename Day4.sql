@@ -25,6 +25,15 @@ Answer: A primary key uniquely identifies each record in a table and cannot cont
   
 7.What is a foreign key? 
 Answer: A foreign key is a column that establishes a relationship between two tables, ensuring referential integrity. 
+ex:
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(100) NOT NULL,
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES Department(dept_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
   
 8.What is a unique key? 
 Answer: A unique key prevents duplicate values in a column but allows NULL values (unlike a primary key). 
